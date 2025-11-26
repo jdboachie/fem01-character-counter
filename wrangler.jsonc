@@ -1,0 +1,7 @@
+{
+  "name": "fem01-deploy-worker",
+  "compatibility_date": "2025-11-26",
+  "assets": {
+    "directory": "./assets"
+  }
+}
