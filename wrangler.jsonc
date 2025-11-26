@@ -1,5 +1,5 @@
 {
-  "name": "fem01-deploy-worker",
+  "name": "fem01-character-counter",
   "compatibility_date": "2025-11-26",
   "assets": {
     "directory": "./assets"
