@@ -36,8 +36,8 @@
                 >
 Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.</textarea
                 >
-                <div class="options-container h-flex">
-                    <div class="toggles-container h-flex text-preset-4">
+                <div class="options-container">
+                    <div class="toggles-container mobile-v-flex h-flex text-preset-4">
                         <label class="h-flex">
                             <input type="checkbox" /> Exclude Spaces</label
                         >
@@ -45,40 +45,40 @@ Design is the silent ambassador of your brand. Simplicity is key to effective co
                             <input type="checkbox" /> Set Character Limit</label
                         >
                     </div>
-                    <p class="text-preset-3">Approx. reading time: <1 minute</p>
+                    <p class="text-preset-4">Approx. reading time: <1 minute</p>
                 </div>
             </section>
             <section class="stats-section h-flex gap-16">
-                <div id="total-characters-card" class="card v-flex">
+                <div class="total-characters-card card v-flex">
                     <p class="text-preset-1">278</p>
                     <p class="text-preset-3">Total Characters</p>
                     <div class="card-image"></div>
                 </div>
-                <div id="word-count-card" class="card v-flex">
+                <div class="word-count-card card v-flex">
                     <p class="text-preset-1">39</p>
                     <p class="text-preset-3">Word Count</p>
                     <div class="card-image"></div>
                 </div>
-                <div id="sentence-count-card" class="card v-flex">
+                <div class="sentence-count-card card v-flex">
                     <p class="text-preset-1">04</p>
                     <p class="text-preset-3">Sentence count</p>
                     <div class="card-image"></div>
                 </div>
             </section>
 
-            <section id="letter-density-section" class="v-flex">
+            <section class="letter-density-section v-flex">
                 <h2 class="text-preset-2">Letter Density</h2>
-                <ul id="density-list-container" class="v-flex">
+                <ul class="density-list-container v-flex">
                     <li>
                         <p class="label">E</p>
                         <div class="progress-bar">
-                            <div class="progress-indicator"></div>
+                            <div style="--progress-width: 16.06%" class="progress-indicator"></div>
                         </div>
                         <p class="progress-detail">40 (16.06%)</p>
                     </li>
                     <li>
                         <p class="label">I</p>
-                        <div class="progress-bar">
+                        <div style="--progress-width: 11.65%" class="progress-bar">
                             <div class="progress-indicator"></div>
                         </div>
                         <p class="progress-detail">29 (11.65%)</p>
@@ -86,28 +86,28 @@ Design is the silent ambassador of your brand. Simplicity is key to effective co
                     <li>
                         <p class="label">T</p>
                         <div class="progress-bar">
-                            <div class="progress-indicator"></div>
+                            <div style="--progress-width: 11.24%" class="progress-indicator"></div>
                         </div>
                         <p class="progress-detail">28 (11.24%)</p>
                     </li>
                     <li>
                         <p class="label">O</p>
                         <div class="progress-bar">
-                            <div class="progress-indicator"></div>
+                            <div style="--progress-width: 8.84%" class="progress-indicator"></div>
                         </div>
                         <p class="progress-detail">22 (8.84%)</p>
                     </li>
                     <li>
                         <p class="label">N</p>
                         <div class="progress-bar">
-                            <div class="progress-indicator"></div>
+                            <div style="--progress-width: 8.43%" class="progress-indicator"></div>
                         </div>
                         <p class="progress-detail">21 (8.43%)</p>
                     </li>
                 </ul>
-                <p class="text-preset-4">
+                <button class="button-ghost text-preset-4">
                     See more <img src="assets/images/caret_down.svg" />
-                </p>
+                </button>
             </section>
         </div>
     </body>
