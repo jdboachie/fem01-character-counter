@@ -20,11 +20,9 @@
     box-sizing: border-box;
 }
 
-/* this is an attempt at resetting normal browser-imposed styles */
 button {
     background-color: transparent;
     border: none;
-    height: 0;
     width: fit-content;
 }
 
@@ -32,7 +30,7 @@ button {
     --color-neutral-0: hsl(0 0 100);
     --color-neutral-100: hsl(240 24 96);
     --color-neutral-200: hsl(240 26 92);
-    --color-neutral-400: hsl(234 14 50); /* Added this for placeholder text */
+    --color-neutral-400: hsl(234 14 50);
     --color-neutral-600: hsl(234 14 29);
     --color-neutral-700: hsl(235 13 19);
     --color-neutral-800: hsl(235 14 15);
@@ -115,7 +113,9 @@ textarea {
     font-family: var(--font-sans);
     resize: none;
     padding: 20px;
-    min-height: 200px; /* let's see if hard-coding this will cause issues 😅*/
+    min-height: 12rem;
+    max-height: 16rem;
+    field-sizing: content;
     background-color: var(--color-neutral-100);
     border: 1px solid var(--color-neutral-200);
     border-radius: var(--radius-12);
@@ -352,7 +352,7 @@ header {
     }
 
     .card-image {
-        translate: 74% 0%;
+        translate: 8.6rem 0rem;
     }
 }
 
@@ -379,8 +379,12 @@ header {
         display: flex;
         flex-direction: column;
     }
+    
+    .card {
+        height: 130px;
+    }
 
     .card-image {
-        translate: 208% 0;
+        translate: 20.5rem 0;
     }
 }
