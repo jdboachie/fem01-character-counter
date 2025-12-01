@@ -141,7 +141,7 @@ header {
     margin-top: var(--spacing-400);
 }
 
-.hero-text {
+.hero__text {
     width: 510px;
     text-align: center;
 }
@@ -162,23 +162,26 @@ header {
     background-repeat: no-repeat;
 }
 
-.toggles-container {
+.toggles__container {
     gap: var(--spacing-300);
+    align-items: center;
 }
 
-.toggles-container label {
+.toggles__item {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     gap: var(--spacing-150);
     height: 21px;
     width: 159px;
 }
 
-.toggles-container label input {
+.toggles__input {
     width: 16px;
     height: 16px;
 }
 
-.settings-container {
+.settings__button {
     width: 44px;
     min-width: 44px;
     height: 44px;
@@ -190,7 +193,7 @@ header {
     border-radius: var(--radius-8);
 }
 
-.settings-icon {
+.settings__button__icon {
     width: 22px;
     height: 22px;
     background-image: url("assets/images/icon-moon.svg");
