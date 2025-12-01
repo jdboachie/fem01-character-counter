@@ -147,7 +147,7 @@ textarea {
     resize: none;
     padding: 20px;
     min-height: 12rem;
-    max-height: 16rem;
+    max-height: 24rem;
     field-sizing: content;
     background-color: var(--textarea-background);
     border: 1px solid var(--border);
@@ -197,17 +197,16 @@ header {
 }
 
 .toggles__container {
-    gap: var(--spacing-150);
+    gap: var(--spacing-400);
     align-items: center;
+    justify-content: start;
 }
 
 .toggles__item {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: var(--spacing-050);
-    height: 21px;
-    width: 180px;
+    justify-content: center;
+    line-height: 0.1em; /* TODO: figure out why this works for me */
 }
 
 .toggles__input {
@@ -215,7 +214,11 @@ header {
 }
 
 .toggles__input:checked + .toggles__checkbox {
-    background: linear-gradient(135deg, #c57bff, #9c68ff);
+    background: linear-gradient(
+        135deg,
+        var(--color-purple-400),
+        var(--color-purple-500)
+    );
     border-color: transparent;
 }
 
