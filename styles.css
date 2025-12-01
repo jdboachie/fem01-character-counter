@@ -88,15 +88,48 @@ button {
     --radius-24: 24px;
     --radius-full: 999px;
 
-    --bg-image-url: url("/assets/images/bg-light-theme.png");
+    --background-image-url: url("/assets/images/bg-light-theme.png");
     --logo-image-url: url("assets/images/logo-light-theme.svg");
+    --seemore-icon-url: url("assets/images/caret_down.svg");
+    --settings-icon-url: url("assets/images/icon-moon.svg");
+
+    --border: var(--color-neutral-200);
+    --checkbox-border: var(--color-neutral-900);
+    --button-background: var(--color-neutral-100);
+    --card-foreground: var(--color-neutral-900);
+    --foreground: var(--color-neutral-900);
+    --hero-text-color: #12131a;
+    --progress-bar-background: var(--color-neutral-100);
+    --textarea-background: var(--color-neutral-100);
+    --textarea-hover-background: var(--color-neutral-200);
+    --text-preset-3: var(--color-neutral-700);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-image-url: url("/assets/images/bg-dark-theme.png");
+        --logo-image-url: url("assets/images/logo-dark-theme.svg");
+        --seemore-icon-url: url("assets/images/caret_down_dark.svg");
+        --settings-icon-url: url("assets/images/icon-sun.svg");
+
+        --border: var(--color-neutral-700);
+        --checkbox-border: var(--color-neutral-0);
+        --foreground: var(--color-neutral-100);
+        --textarea-background: var(--color-neutral-800);
+        --textarea-hover-background: var(--color-neutral-700);
+        --hero-text-color: var(--color-neutral-100);
+        --text-preset-3: var(--color-neutral-200);
+        --button-background: var(--color-neutral-700);
+        --progress-bar-background: var(--color-neutral-800);
+    }
 }
 
 body {
     font-family: var(--font-sans);
-    background-image: var(--bg-image-url);
+    background-image: var(--background-image-url);
     background-repeat: repeat;
     background-size: auto;
+    color: var(--foreground);
     padding: 20px;
 }
 
@@ -116,8 +149,8 @@ textarea {
     min-height: 12rem;
     max-height: 16rem;
     field-sizing: content;
-    background-color: var(--color-neutral-100);
-    border: 1px solid var(--color-neutral-200);
+    background-color: var(--textarea-background);
+    border: 1px solid var(--border);
     border-radius: var(--radius-12);
 }
 
@@ -126,7 +159,7 @@ textarea::placeholder {
 }
 
 textarea:hover {
-    background-color: var(--color-neutral-200);
+    background-color: var(--textarea-hover-background);
 }
 
 textarea:focus {
@@ -144,6 +177,7 @@ header {
 .hero__text {
     width: 510px;
     text-align: center;
+    color: var(--hero-text-color);
 }
 
 .container {
@@ -163,7 +197,7 @@ header {
 }
 
 .toggles__container {
-    gap: var(--spacing-300);
+    gap: var(--spacing-150);
     align-items: center;
 }
 
@@ -173,12 +207,52 @@ header {
     align-items: center;
     gap: var(--spacing-150);
     height: 21px;
-    width: 159px;
+    width: 180px;
 }
 
 .toggles__input {
+    display: none;
+}
+
+.toggles__input:checked + .toggles__checkbox {
+    background: linear-gradient(135deg, #c57bff, #9c68ff);
+    border-color: transparent;
+}
+
+.toggles__checkbox {
     width: 16px;
     height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--checkbox-border);
+    display: inline-block;
+    position: relative;
+    transition: 0.1s ease-out;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.toggles__input:checked + .toggles__checkbox::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    border-left: 1px solid #2e2e2e;
+    border-bottom: 1px solid #2e2e2e;
+    border-radius: 0.5px;
+    left: 3px;
+    top: 3px;
+    transform: rotate(-45deg);
+}
+
+.toggles__input:checked + .toggles__checkbox::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 6px;
+}
+
+.toggles__checkbox:hover {
+    outline: 2px solid rgba(197, 122, 255, 0.4);
 }
 
 .settings__button {
@@ -188,7 +262,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-neutral-100);
+    background-color: var(--button-background);
     border: none;
     border-radius: var(--radius-8);
 }
@@ -196,14 +270,13 @@ header {
 .settings__button__icon {
     width: 22px;
     height: 22px;
-    background-image: url("assets/images/icon-moon.svg");
+    background-image: var(--settings-icon-url);
     background-repeat: no-repeat;
     background-size: 22px;
 }
 
-.options-container {
+.options__container {
     display: flex;
-    color: var(--color-neutral-900);
     justify-content: space-between;
 }
 
@@ -221,6 +294,11 @@ header {
     padding: var(--spacing-200);
     border-radius: var(--radius-12);
     gap: calc(var(--spacing-050) + 1);
+    color: var(--card-foreground);
+}
+
+.card > .text-preset-3 {
+    color: var(--card-foreground);
 }
 
 .card-image {
@@ -275,23 +353,43 @@ header {
     min-width: 10px;
 }
 
-.progress-bar {
+.progressbar {
     width: 100%;
     height: 12px;
-    background-color: var(--color-neutral-100);
+    background-color: var(--progress-bar-background);
     border-radius: var(--radius-full);
 }
 
-.progress-indicator {
+.progressbar__indicator {
     height: 12px;
     width: var(--progress-width, 0%);
     border-radius: var(--radius-full);
     background-color: var(--color-purple-400);
 }
 
-.progress-detail {
+.progressbar__detail {
     text-align: right;
     min-width: 100px;
+}
+
+.seemore__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--foreground);
+    gap: var(--spacing-100);
+}
+
+.seemore__button__icon {
+    background-image: var(--seemore-icon-url);
+    width: 10px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-size: 10px;
+    background-position: 50% 50%;
 }
 
 .text-preset-1 {
@@ -311,6 +409,7 @@ header {
     font-size: var(--font-size-3);
     line-height: var(--leading-3);
     letter-spacing: var(--tracking-3);
+    color: var(--text-preset-3);
 }
 
 .text-preset-4 {
@@ -359,25 +458,25 @@ header {
         width: fit-content;
     }
 
-    .options-container {
+    .options__container {
         display: flex;
         flex-direction: column;
         gap: var(--spacing-175);
     }
 
-    .toggles-container {
+    .toggles__container {
         display: flex;
         flex-direction: column;
         align-items: start;
         gap: var(--spacing-175);
     }
 
-    .stats-section {
+    .stats__section {
         height: fit-content;
         display: flex;
         flex-direction: column;
     }
-    
+
     .card {
         height: 130px;
     }

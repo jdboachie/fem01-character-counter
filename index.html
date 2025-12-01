@@ -20,7 +20,7 @@
             <header class="h-flex">
                 <span class="logo"></span>
                 <button class="settings__button">
-                    <div class="settings__button__icon"></div>
+                    <span class="settings__button__icon"></span>
                 </button>
             </header>
             <div class="container">
@@ -28,29 +28,32 @@
                     Analyze your text in real-time.
                 </h1>
             </div>
-            <section class="input-area v-flex gap-16">
+            <section class="inputarea v-flex gap-16">
                 <textarea
                     placeholder="Start typing here... (or paste your text)"
                     spellcheck="false"
                     class="text-preset-3"
+                    tabindex="0"
                 >
 Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.
                 </textarea>
-                <div class="options-container">
+                <div class="options__container">
                     <div class="toggles__container h-flex text-preset-4">
-                        <label class="toggles__item">
+                        <label class="toggles__item" tabindex="0">
                             <input class="toggles__input" type="checkbox" />
+                            <span class="toggles__checkbox"></span>
                             Exclude Spaces
                         </label>
-                        <label class="toggles__item">
+                        <label class="toggles__item" tabindex="2">
                             <input class="toggles__input" type="checkbox" />
+                            <span class="toggles__checkbox"></span>
                             Set Character Limit
                         </label>
                     </div>
                     <p class="text-preset-4">Approx. reading time: <1 minute</p>
                 </div>
             </section>
-            <section class="stats-section h-flex gap-16">
+            <section class="stats__section h-flex gap-16">
                 <div class="total-characters-card card v-flex">
                     <p class="text-preset-1">278</p>
                     <p class="text-preset-3">Total Characters</p>
@@ -73,57 +76,57 @@ Design is the silent ambassador of your brand. Simplicity is key to effective co
                 <ul class="density-list-container v-flex">
                     <li>
                         <p class="label">E</p>
-                        <div class="progress-bar">
+                        <div class="progressbar">
                             <div
                                 style="--progress-width: 16.06%"
-                                class="progress-indicator"
+                                class="progressbar__indicator"
                             ></div>
                         </div>
-                        <p class="progress-detail">40 (16.06%)</p>
+                        <p class="progressbar__detail">40 (16.06%)</p>
                     </li>
                     <li>
                         <p class="label">I</p>
                         <div
                             style="--progress-width: 11.65%"
-                            class="progress-bar"
+                            class="progressbar"
                         >
-                            <div class="progress-indicator"></div>
+                            <div class="progressbar__indicator"></div>
                         </div>
-                        <p class="progress-detail">29 (11.65%)</p>
+                        <p class="progressbar__detail">29 (11.65%)</p>
                     </li>
                     <li>
                         <p class="label">T</p>
-                        <div class="progress-bar">
+                        <div class="progressbar">
                             <div
                                 style="--progress-width: 11.24%"
-                                class="progress-indicator"
+                                class="progressbar__indicator"
                             ></div>
                         </div>
-                        <p class="progress-detail">28 (11.24%)</p>
+                        <p class="progressbar__detail">28 (11.24%)</p>
                     </li>
                     <li>
                         <p class="label">O</p>
-                        <div class="progress-bar">
+                        <div class="progressbar">
                             <div
                                 style="--progress-width: 8.84%"
-                                class="progress-indicator"
+                                class="progressbar__indicator"
                             ></div>
                         </div>
-                        <p class="progress-detail">22 (8.84%)</p>
+                        <p class="progressbar__detail">22 (8.84%)</p>
                     </li>
                     <li>
                         <p class="label">N</p>
-                        <div class="progress-bar">
+                        <div class="progressbar">
                             <div
                                 style="--progress-width: 8.43%"
-                                class="progress-indicator"
+                                class="progressbar__indicator"
                             ></div>
                         </div>
-                        <p class="progress-detail">21 (8.43%)</p>
+                        <p class="progressbar__detail">21 (8.43%)</p>
                     </li>
                 </ul>
-                <button class="button-ghost text-preset-4">
-                    See more <img src="assets/images/caret_down.svg" />
+                <button class="seemore__button text-preset-4">
+                    See more <span class="seemore__button__icon"></span>
                 </button>
             </section>
         </div>
