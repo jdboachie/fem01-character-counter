@@ -26,29 +26,44 @@
                 </h1>
             </div>
             <section class="inputarea v-flex gap-16">
-                <textarea
-                    id="textarea"
-                    placeholder="Start typing here... (or paste your text)"
-                    spellcheck="false"
-                    class="text-preset-3"
-                    tabindex="1"
-                ></textarea>
+                <div class="v-flex">
+                    <textarea
+                        id="textarea"
+                        placeholder="Start typing here... (or paste your text)"
+                        spellcheck="false"
+                        class="text-preset-3"
+                        tabindex="1"
+                        data-error="true"
+                    ></textarea>
+                    <span
+                        id="textarea-error-label"
+                        class="textarea__error__label text-preset-4"
+                    ></span>
+                </div>
                 <div class="options__container">
                     <div class="toggles__container h-flex text-preset-4">
                         <label class="toggles__item" tabindex="2">
-                            <input class="toggles__input" type="checkbox" />
+                            <input
+                                id="whitespace-toggle"
+                                class="toggles__input"
+                                type="checkbox"
+                            />
                             <span class="toggles__checkbox"></span>
                             Exclude Spaces
                         </label>
                         <label class="toggles__item" tabindex="3">
-                            <input class="toggles__input" type="checkbox" />
+                            <input
+                                id="character-limit-toggle"
+                                class="toggles__input"
+                                type="checkbox"
+                            />
                             <span class="toggles__checkbox"></span>
                             Set Character Limit
                         </label>
                     </div>
                     <p class="text-preset-4">
                         Approx. reading time:
-                        <span id="read-time-display">0 minute</span>
+                        <span id="read-time-display">0 minutes</span>
                     </p>
                 </div>
             </section>
