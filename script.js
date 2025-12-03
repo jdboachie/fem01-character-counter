@@ -154,6 +154,10 @@ let counter = {
   getLetterDensities(text) {
     const counts = this.getCharacterCounts(text);
     const totalLetters = Object.values(counts).reduce((a, b) => a + b, 0);
+    if (totalLetters === 0) {
+      return;
+    }
+
     const densities = Object.entries(counts)
       .map(([letter, count]) => ({
         letter,
