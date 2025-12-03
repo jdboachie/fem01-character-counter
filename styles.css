@@ -88,6 +88,7 @@ button {
     --radius-24: 24px;
     --radius-full: 999px;
 
+    --alert-icon-url: url("assets/images/icon-info.svg");
     --background-image-url: url("/assets/images/bg-light-theme.png");
     --logo-image-url: url("assets/images/logo-light-theme.svg");
     --seemore-icon-url: url("assets/images/caret_down.svg");
@@ -133,6 +134,7 @@ body {
     background-size: auto;
     color: var(--foreground);
     padding: 20px;
+    margin-bottom: var(--spacing-400);
 }
 
 button {
@@ -179,14 +181,24 @@ textarea.error {
     box-shadow: 0px 0px 10px 1px var(--color-orange-400);
 }
 
-.textarea__error__label {
-    margin-top: 4px;
+textarea.error + .textarea__error__label {
+    display: flex;
+    align-items: center;
+    height: 16px;
+    margin-top: var(--spacing-175);
     color: var(--color-orange-500);
 }
 
-.textarea__error_label::before {
+textarea.error + .textarea__error__label::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
     background-size: 16px;
     background-image: var(--alert-icon-url);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    padding-left: 6px;
 }
 
 header {
@@ -255,8 +267,8 @@ header {
     position: absolute;
     width: 8px;
     height: 5px;
-    border-left: 1px solid #2e2e2e;
-    border-bottom: 1px solid #2e2e2e;
+    border-left: 1.5px solid #2e2e2e; /* TODO: move this to a variable */
+    border-bottom: 1.5px solid #2e2e2e;
     border-radius: 0.5px;
     left: 3px;
     top: 3px;
@@ -271,7 +283,28 @@ header {
 }
 
 .toggles__checkbox:hover {
-    outline: 2px solid rgba(197, 122, 255, 0.4);
+    outline: 2px solid rgba(197, 122, 255, 0.4); /* TODO: move this to a variable */
+}
+
+.character__limit__input {
+    visibility: hidden;
+    margin-left: var(--spacing-150);
+    width: 55px;
+    height: 29px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-6);
+    padding: 4px 8px;
+    font-family: var(--font-sans);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    appearance: textfield;
 }
 
 .settings__button {
@@ -388,7 +421,7 @@ header {
 
 .progressbar__detail {
     text-align: right;
-    min-width: 100px;
+    min-width: 110px;
 }
 
 .seemore__button {
@@ -473,8 +506,9 @@ header {
 }
 
 @media (max-width: 624px) {
-    .hero-text {
-        width: fit-content;
+    .hero__text {
+        width: 90%;
+        margin: auto
     }
 
     .options__container {

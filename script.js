@@ -1,3 +1,38 @@
+class StatChangeEvent {
+  constructor({ characterCount, wordCount, sentenceCount, readTime }) {
+    this.characterCount = characterCount;
+    this.readTime = readTime;
+    this.sentenceCount = sentenceCount;
+    this.wordCount = wordCount;
+  }
+}
+
+class CharacterLimitEvent {
+  constructor({ isOverLimit, newLimit: limit }) {
+    this.isOverLimit = isOverLimit;
+    this.limit = limit;
+  }
+}
+class LetterDensityChangeEvent {
+  constructor(densities) {
+    this.densities = densities;
+  }
+}
+
+/**
+ * Debounce a callback function to limit it's invocation rate.
+ * @param {function} fn - the callback to debounce
+ * @param {number} delay - milliseconds to wait before invoking fn
+ * @returns {function(...args: any[]): void} debounced version of fn
+ */
+function debounce(fn, delay) {
+  let id;
+  return (...args) => {
+    clearTimeout(id);
+    id = setTimeout(() => fn(...args), delay);
+  };
+}
+
 let pubsub = {
   events: {},
 
@@ -16,7 +51,9 @@ let pubsub = {
 
 let view = {
   characterLimitToggle: document.getElementById("character-limit-toggle"),
+  characterLimitInput: document.getElementById("character-limit-input"),
   characterCountDisplay: document.getElementById("character-count-display"),
+  letterDensityView: document.getElementById("letter-density-view"),
   readTimeDisplay: document.getElementById("read-time-display"),
   sentenceCountDisplay: document.getElementById("sentence-count-display"),
   textarea: document.getElementById("textarea"),
@@ -24,7 +61,35 @@ let view = {
   whitespaceToggle: document.getElementById("whitespace-toggle"),
   wordCountDisplay: document.getElementById("word-count-display"),
 
-  update(data) {
+  generateLetterDensityTemplate(data) {
+    return `
+      <li>
+          <p class="label">${data.letter}</p>
+          <div
+              style="--progress-width: ${data.percent}%"
+              class="progressbar"
+          >
+              <div class="progressbar__indicator"></div>
+          </div>
+          <p class="progressbar__detail">${data.count} (${data.percent.toFixed(2)}%)</p>
+      </li>
+    `;
+  },
+
+  updateLetterDensityView(event) {
+    if (event.densities.length == 0) {
+      this.letterDensityView.innerHTML =
+        "No characters found. Start typing to see letter density.";
+    } else {
+      this.letterDensityView.innerHTML = `
+        <ul class="density-list-container v-flex">
+          ${event.densities.map((item) => this.generateLetterDensityTemplate(item)).join("")}
+        </ul>
+    `;
+    }
+  },
+
+  updateStats(data) {
     this.characterCountDisplay.textContent = data.characterCount;
     this.sentenceCountDisplay.textContent = data.sentenceCount;
     this.wordCountDisplay.textContent = data.wordCount;
@@ -36,33 +101,75 @@ let view = {
           : `${data.readTime.toFixed(2)} minutes`;
   },
 
-  showError(isOverLimit) {
-    if (isOverLimit == true) {
+  toggleErrorLabel(event) {
+    if (event.isOverLimit === true) {
       if (!this.textarea.classList.contains("error")) {
         this.textarea.classList.add("error");
       }
-      this.textareaErrorLabel.textContent =
-        "Limit reached! Your text exceeds 300 characters.";
+      this.textareaErrorLabel.textContent = `Limit reached! Your text exceeds ${event.limit} characters.`;
     } else {
       this.textarea.classList.remove("error");
       this.textareaErrorLabel.textContent = "";
     }
   },
+
+  toggleCharacterLimitInput(visible) {
+    if (visible === true) {
+      this.characterLimitInput.style.visibility = "visible";
+    } else {
+      this.characterLimitInput.style.visibility = "hidden";
+    }
+  },
 };
 
 let counterModel = {
-  CHARACTER_LIMIT: 300,
-  WPM: 200,
   characterCount: 0,
+  characterLimit: 0,
   readTime: 0,
   sentenceCount: 0,
-  wordCount: 0,
-
-  shouldIncludeWhitespace: true,
+  shouldExcludeWhitespace: false,
   shouldUseCharacterLimit: false,
+  wordCount: 0,
+  WPM: 200,
 
-  setIncludeWhitespace(shouldIncludeWhitespace) {
-    this.shouldIncludeWhitespace = shouldIncludeWhitespace;
+  getCharacterCounts(text) {
+    let counts = {};
+    for (const char of text.toUpperCase()) {
+      if (/[A-Z]/.test(char)) counts[char] = (counts[char] || 0) + 1;
+    }
+    return counts;
+  },
+
+  getLetterDensities(text) {
+    const counts = this.getCharacterCounts(text);
+    const totalLetters = Object.values(counts).reduce((a, b) => a + b, 0);
+    const densities = Object.entries(counts)
+      .map(([letter, count]) => ({
+        letter,
+        count,
+        percent: (count / totalLetters) * 100,
+      }))
+      .sort((a, b) => b.percent - a.percent);
+
+    pubsub.publish(
+      "LetterDensityChangeEvent",
+      new LetterDensityChangeEvent(densities),
+    );
+  },
+
+  setExcludeWhitespace(shouldIncludeWhitespace) {
+    this.shouldExcludeWhitespace = shouldIncludeWhitespace;
+  },
+
+  setCharacterLimit(limit) {
+    this.characterLimit = limit;
+    pubsub.publish(
+      "CharacterLimitEvent",
+      new CharacterLimitEvent({
+        isOverLimit: this.characterCount > this.characterLimit,
+        limit: this.characterLimit,
+      }),
+    );
   },
 
   setUseCharacterLimit(shouldUseCharacterLimit) {
@@ -70,63 +177,94 @@ let counterModel = {
   },
 
   updateCharacterCount(text) {
-    if (this.shouldIncludeWhitespace) {
-      this.characterCount = text.length.toString();
+    if (this.shouldExcludeWhitespace) {
+      this.characterCount = text.replace(/\s/g, "").length;
     } else {
-      this.characterCount = text.replace(/\s/g, "").length.toString();
+      this.characterCount = text.length;
     }
   },
 
   updateStats(text) {
-    if (text.length > this.CHARACTER_LIMIT && this.shouldUseCharacterLimit) {
-      pubsub.publish("LimitErrorChangeEvent", { isOverLimit: true });
-      return;
+    this.updateCharacterCount(text);
+    if (
+      this.characterCount > this.characterLimit &&
+      this.shouldUseCharacterLimit
+    ) {
+      pubsub.publish(
+        "CharacterLimitEvent",
+        new CharacterLimitEvent({
+          isOverLimit: true,
+          limit: this.characterLimit,
+        }),
+      );
+    } else {
+      pubsub.publish(
+        "CharacterLimitEvent",
+        new CharacterLimitEvent({
+          isOverLimit: false,
+          limit: this.characterLimit,
+        }),
+      );
     }
 
-    pubsub.publish("LimitErrorChangeEvent", { isOverLimit: false });
-
-    this.updateCharacterCount(text);
     this.wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-    this.sentenceCount = text.trim().split(".").filter(Boolean).length;
-    // TODO: Add support for sentences that end in "?"
+    this.sentenceCount = text.trim().split(/[.!?]/).filter(Boolean).length;
     this.readTime = this.wordCount / this.WPM;
 
-    pubsub.publish("ChangeEvent", {
-      characterCount: this.characterCount,
-      wordCount: this.wordCount,
-      sentenceCount: this.sentenceCount,
-      readTime: this.readTime,
-    });
+    pubsub.publish(
+      "StatChangeEvent",
+      new StatChangeEvent({
+        characterCount: this.characterCount,
+        wordCount: this.wordCount,
+        sentenceCount: this.sentenceCount,
+        readTime: this.readTime,
+      }),
+    );
+
+    this.getLetterDensities(text);
   },
 };
 
-function onInput(event) {
+const onTextareaInput = debounce((event) => {
   counterModel.updateStats(event.target.value);
+}, 100);
+
+function onCharacterLimitInput(event) {
+  counterModel.setCharacterLimit(event.target.value);
 }
 
 function onToggleCharacterLimit(event) {
+  view.toggleCharacterLimitInput(event.target.checked);
   counterModel.setUseCharacterLimit(event.target.checked);
   counterModel.updateStats(view.textarea.value);
 }
 
 function onToggleWhitespace(event) {
-  counterModel.setIncludeWhitespace(!event.target.checked);
+  counterModel.setExcludeWhitespace(event.target.checked);
   counterModel.updateStats(view.textarea.value);
 }
 
 function run() {
-  view.textarea.addEventListener("input", onInput);
+  const DEFAULT_CHARACTER_LIMIT = 300;
+
+  view.characterLimitInput.addEventListener("input", onCharacterLimitInput);
   view.characterLimitToggle.addEventListener("change", onToggleCharacterLimit);
+  view.textarea.addEventListener("input", onTextareaInput);
   view.whitespaceToggle.addEventListener("change", onToggleWhitespace);
 
-  // TODO: implement letter density
+  view.characterLimitInput.value = DEFAULT_CHARACTER_LIMIT;
+  counterModel.setCharacterLimit(DEFAULT_CHARACTER_LIMIT);
 
-  pubsub.subscribe("ChangeEvent", (data) => {
-    view.update(data);
+  pubsub.subscribe("StatChangeEvent", (data) => {
+    view.updateStats(data);
   });
 
-  pubsub.subscribe("LimitErrorChangeEvent", (data) => {
-    view.showError(data.isOverLimit);
+  pubsub.subscribe("CharacterLimitEvent", (event) => {
+    view.toggleErrorLabel(event);
+  });
+
+  pubsub.subscribe("LetterDensityChangeEvent", (event) => {
+    view.updateLetterDensityView(event);
   });
 }
 
