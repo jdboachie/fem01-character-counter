@@ -42,7 +42,7 @@
                 </div>
                 <div class="options__container">
                     <div class="toggles__container h-flex text-preset-4">
-                        <label class="toggles__item" tabindex="2">
+                        <label class="toggles__item">
                             <input
                                 id="whitespace-toggle"
                                 class="toggles__input"
@@ -51,7 +51,7 @@
                             <span class="toggles__checkbox"></span>
                             Exclude Spaces
                         </label>
-                        <label class="toggles__item" tabindex="3">
+                        <label class="toggles__item">
                             <input
                                 id="character-limit-toggle"
                                 class="toggles__input"
@@ -59,7 +59,12 @@
                             />
                             <span class="toggles__checkbox"></span>
                             Set Character Limit
-                            <input id="character-limit-input" class="character__limit__input text-preset-4" type="number" />
+                            <input
+                                aria-label="Character limit value"
+                                id="character-limit-input"
+                                class="character__limit__input text-preset-4"
+                                type="number"
+                            />
                         </label>
                     </div>
                     <p class="text-preset-4">
