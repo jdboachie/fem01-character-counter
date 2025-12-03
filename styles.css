@@ -178,7 +178,10 @@ textarea:focus {
 textarea.error {
     border: 1px solid var(--color-orange-500);
     outline: 2px solid var(--color-orange-500);
-    box-shadow: 0px 0px 10px 1px var(--color-orange-400);
+}
+
+.textarea.error, textarea.error:focus {
+    box-shadow: 0px 0px 10px 1px var(--color-orange-500);
 }
 
 textarea.error + .textarea__error__label {
