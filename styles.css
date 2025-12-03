@@ -149,7 +149,7 @@ button {
 textarea {
     font-family: var(--font-sans);
     resize: none;
-    width: full;
+    width: 100%;
     padding: 20px;
     min-height: 12rem;
     max-height: 24rem;

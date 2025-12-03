@@ -21,7 +21,7 @@ class LetterDensityChangeEvent {
 }
 
 /**
- * Debounce a callback function to limit it's invocation rate.
+ * Debounce a callback function to limit its invocation rate.
  * @param {function} fn - the callback to debounce
  * @param {number} delay - milliseconds to wait before invoking fn
  * @returns {function(...args: any[]): void} debounced version of fn
@@ -78,7 +78,7 @@ let view = {
   },
 
   updateLetterDensityView(event) {
-    if (event.densities.length == 0) {
+    if (event.densities.length === 0) {
       this.letterDensityView.innerHTML =
         "No characters found. Start typing to see letter density.";
     } else {
@@ -172,8 +172,8 @@ let counter = {
     );
   },
 
-  setExcludeWhitespace(shouldIncludeWhitespace) {
-    this.shouldExcludeWhitespace = shouldIncludeWhitespace;
+  setExcludeWhitespace(shouldExcludeWhitespace) {
+    this.shouldExcludeWhitespace = shouldExcludeWhitespace;
   },
 
   setCharacterLimit(limit) {
