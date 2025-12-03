@@ -8,11 +8,12 @@ class StatChangeEvent {
 }
 
 class CharacterLimitEvent {
-  constructor({ isOverLimit, newLimit: limit }) {
+  constructor({ isOverLimit, limit: limit }) {
     this.isOverLimit = isOverLimit;
     this.limit = limit;
   }
 }
+
 class LetterDensityChangeEvent {
   constructor(densities) {
     this.densities = densities;
