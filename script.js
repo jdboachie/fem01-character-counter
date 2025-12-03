@@ -21,7 +21,7 @@ class LetterDensityChangeEvent {
 }
 
 /**
- * Debounce a callback function to limit it's invocation rate.
+ * Debounce a callback function to limit its invocation rate.
  * @param {function} fn - the callback to debounce
  * @param {number} delay - milliseconds to wait before invoking fn
  * @returns {function(...args: any[]): void} debounced version of fn
