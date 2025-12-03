@@ -168,8 +168,8 @@ let counter = {
     );
   },
 
-  setExcludeWhitespace(shouldIncludeWhitespace) {
-    this.shouldExcludeWhitespace = shouldIncludeWhitespace;
+  setExcludeWhitespace(shouldExcludeWhitespace) {
+    this.shouldExcludeWhitespace = shouldExcludeWhitespace;
   },
 
   setCharacterLimit(limit) {
