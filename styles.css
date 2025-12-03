@@ -180,7 +180,8 @@ textarea.error {
     outline: 2px solid var(--color-orange-500);
 }
 
-.textarea.error, textarea.error:focus {
+.textarea.error,
+textarea.error:focus {
     box-shadow: 0px 0px 10px 1px var(--color-orange-500);
 }
 
@@ -237,7 +238,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 0.1em; /* TODO: figure out why this works for me */
+    line-height: 0.1em;
 }
 
 .toggles__input {
@@ -298,6 +299,13 @@ header {
     border-radius: var(--radius-6);
     padding: 4px 8px;
     font-family: var(--font-sans);
+    box-shadow: 0px 2px 1px -1px var(--border);
+    color: var(--foreground);
+    background-color: var(--textarea-background);
+}
+
+.character__limit__input:focus {
+    outline: 1px solid var(--color-neutral-400);
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -392,19 +400,19 @@ input[type="number"] {
     gap: 20px;
 }
 
-.density-list-container {
+.density__list {
     list-style: none;
     gap: var(--spacing-175);
 }
 
-.density-list-container li {
+.density__list li {
     display: flex;
     align-items: center;
     justify-content: start;
     gap: 14px;
 }
 
-.density-list-container .label {
+.density__list .label {
     min-width: 10px;
 }
 
@@ -431,6 +439,8 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: var(--spacing-050);
+    margin-top: var(--spacing-175);
     color: var(--foreground);
     gap: var(--spacing-100);
 }
@@ -445,6 +455,14 @@ input[type="number"] {
     background-repeat: no-repeat;
     background-size: 10px;
     background-position: 50% 50%;
+}
+
+.seemore__button__icon[data-open="true"] {
+    transform: rotate(180deg);
+}
+
+.seemore__button__icon[data-open="false"] {
+    transform: rotate(0deg);
 }
 
 .text-preset-1 {
@@ -511,7 +529,7 @@ input[type="number"] {
 @media (max-width: 624px) {
     .hero__text {
         width: 90%;
-        margin: auto
+        margin: auto;
     }
 
     .options__container {

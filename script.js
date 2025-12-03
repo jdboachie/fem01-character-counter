@@ -64,7 +64,7 @@ let view = {
 
   generateLetterDensityTemplate(data) {
     return `
-      <li>
+      <li class="text-preset-4">
           <p class="label">${data.letter}</p>
           <div
               style="--progress-width: ${data.percent}%"
@@ -82,11 +82,21 @@ let view = {
       this.letterDensityView.innerHTML =
         "No characters found. Start typing to see letter density.";
     } else {
+      const items = app.shouldSeeMore
+        ? event.densities
+        : event.densities.slice(0, 5);
+
       this.letterDensityView.innerHTML = `
-        <ul class="density-list-container v-flex">
-          ${event.densities.map((item) => this.generateLetterDensityTemplate(item)).join("")}
-        </ul>
-    `;
+        <div class="density__container">
+          <ul class="density__list v-flex">
+            ${items.map((item) => this.generateLetterDensityTemplate(item)).join("")}
+          </ul>
+          <button class="seemore__button text-preset-3">
+            See ${app.shouldSeeMore ? "less" : "more"}
+            <span class="seemore__button__icon" data-open="${app.shouldSeeMore}"></span>
+          </button>
+        </div>
+      `;
     }
   },
 
@@ -123,7 +133,7 @@ let view = {
   },
 };
 
-let counterModel = {
+let counter = {
   characterCount: 0,
   characterLimit: 0,
   readTime: 0,
@@ -226,47 +236,62 @@ let counterModel = {
   },
 };
 
-const onTextareaInput = debounce((event) => {
-  counterModel.updateStats(event.target.value);
-}, 100);
+let app = {
+  DEFAULT_CHARACTER_LIMIT: 300,
+  shouldSeeMore: false,
 
-function onCharacterLimitInput(event) {
-  counterModel.setCharacterLimit(event.target.value);
-}
+  onTextareaInput: debounce((event) => {
+    counter.updateStats(event.target.value);
+  }, 100),
 
-function onToggleCharacterLimit(event) {
-  view.toggleCharacterLimitInput(event.target.checked);
-  counterModel.setUseCharacterLimit(event.target.checked);
-  counterModel.updateStats(view.textarea.value);
-}
+  onCharacterLimitInput: (event) => {
+    counter.setCharacterLimit(event.target.value);
+  },
 
-function onToggleWhitespace(event) {
-  counterModel.setExcludeWhitespace(event.target.checked);
-  counterModel.updateStats(view.textarea.value);
-}
+  onToggleCharacterLimit: (event) => {
+    view.toggleCharacterLimitInput(event.target.checked);
+    counter.setUseCharacterLimit(event.target.checked);
+    counter.updateStats(view.textarea.value);
+  },
 
-function run() {
-  const DEFAULT_CHARACTER_LIMIT = 300;
+  onToggleWhitespace: (event) => {
+    counter.setExcludeWhitespace(event.target.checked);
+    counter.updateStats(view.textarea.value);
+  },
 
-  view.characterLimitInput.addEventListener("input", onCharacterLimitInput);
-  view.characterLimitToggle.addEventListener("change", onToggleCharacterLimit);
-  view.textarea.addEventListener("input", onTextareaInput);
-  view.whitespaceToggle.addEventListener("change", onToggleWhitespace);
+  run: () => {
+    view.characterLimitInput.addEventListener(
+      "input",
+      app.onCharacterLimitInput,
+    );
+    view.characterLimitToggle.addEventListener(
+      "change",
+      app.onToggleCharacterLimit,
+    );
+    view.textarea.addEventListener("input", app.onTextareaInput);
+    view.whitespaceToggle.addEventListener("change", app.onToggleWhitespace);
+    view.letterDensityView.addEventListener("click", (e) => {
+      if (e.target.closest(".seemore__button")) {
+        app.shouldSeeMore = !app.shouldSeeMore;
+        counter.getLetterDensities(view.textarea.value);
+      }
+    });
 
-  view.characterLimitInput.value = DEFAULT_CHARACTER_LIMIT;
-  counterModel.setCharacterLimit(DEFAULT_CHARACTER_LIMIT);
+    view.characterLimitInput.value = app.DEFAULT_CHARACTER_LIMIT;
+    counter.setCharacterLimit(app.DEFAULT_CHARACTER_LIMIT);
 
-  pubsub.subscribe("StatChangeEvent", (data) => {
-    view.updateStats(data);
-  });
+    pubsub.subscribe("StatChangeEvent", (data) => {
+      view.updateStats(data);
+    });
 
-  pubsub.subscribe("CharacterLimitEvent", (event) => {
-    view.toggleErrorLabel(event);
-  });
+    pubsub.subscribe("CharacterLimitEvent", (event) => {
+      view.toggleErrorLabel(event);
+    });
 
-  pubsub.subscribe("LetterDensityChangeEvent", (event) => {
-    view.updateLetterDensityView(event);
-  });
-}
+    pubsub.subscribe("LetterDensityChangeEvent", (event) => {
+      view.updateLetterDensityView(event);
+    });
+  },
+};
 
-run();
+app.run();
