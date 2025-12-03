@@ -78,7 +78,7 @@ let view = {
   },
 
   updateLetterDensityView(event) {
-    if (event.densities.length == 0) {
+    if (event.densities.length === 0) {
       this.letterDensityView.innerHTML =
         "No characters found. Start typing to see letter density.";
     } else {
