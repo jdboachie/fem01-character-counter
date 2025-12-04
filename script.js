@@ -91,10 +91,19 @@ let view = {
           <ul class="density__list v-flex">
             ${items.map((item) => this.generateLetterDensityTemplate(item)).join("")}
           </ul>
-          <button class="seemore__button text-preset-3">
-            See ${app.shouldSeeMore ? "less" : "more"}
-            <span class="seemore__button__icon" data-open="${app.shouldSeeMore}"></span>
-          </button>
+          ${
+            event.densities.length > 5
+              ? `
+              <button class="seemore__button text-preset-3">
+                See ${app.shouldSeeMore ? "less" : "more"}
+                <span
+                  class="seemore__button__icon"
+                  data-open="${app.shouldSeeMore}"
+                ></span>
+              </button>
+            `
+              : ""
+          }
         </div>
       `;
     }
